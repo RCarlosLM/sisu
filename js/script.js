@@ -7,17 +7,23 @@ $(".chosen-select").chosen({
 $.ajax({
     url: "http://localhost:8080/servicio/paises",
     type : 'get',
+    contentType: 'application/json',
+    dataType: "json",
+    headers: {
+        'Accept': 'application/json',
+        "content-type": "application/json;charset=UTF-8"
+    },
     success: function(response){
         console.log(response);
         
-        $('#select-pais').html('<option> Selecciona un pais </option>');
+        $('#pais').html('<option value="u"> Selecciona un pais </option>');
 
         // mostramos las opciones
         $.each( response, function( key, value ) {
             newOption = $("<option value="+value.id+">"+value.nombre+"</option>");
-            $('#select-pais').append(newOption);
+            $('#pais').append(newOption);
         });
-        $('#select-pais').trigger("chosen:updated");
+        $('#pais').trigger("chosen:updated");
 
         // mensaje al usuario
         toastr.success('Correcto!','Paises cargados');
@@ -34,7 +40,7 @@ $('.ciudad').css('display', 'none');
 
 // *** select estado ***
 $(function(){
-    $('#select-pais').on('change', onSelectPaisChange);
+    $('#pais').on('change', onSelectPaisChange);
 });
   
 function onSelectPaisChange() {
@@ -43,40 +49,60 @@ function onSelectPaisChange() {
     //mostramos el combo estado
     $('.estado').css('display', 'inline-block');
 
-    $.ajax({
-        url: "http://localhost:8080/servicio/estados",
-        type : 'post',
-        data : paisId,
-        contentType: 'application/json',
-        success: function(response){
-            console.log(response);
-            
-            // limpiamos el select
-            $('#select-estado').empty();
-            $('#select-ciudad').empty();
-            $('#select-estado').html('<option> Selecciona un estado </option>');
+    if(paisId == 'u'){
 
-            // mostramos las opciones
-            $.each( response, function( key, value ) {
-                newOption = $("<option value="+value.id+">"+value.nombre+"</option>");
-                $('#select-estado').append(newOption);
-            });
-            $('#select-estado').trigger("chosen:updated");
+        $('#estado').empty();
+        $('#estado').trigger("chosen:updated");
+        $('#ciudad').empty();
+        $('#ciudad').trigger("chosen:updated");
 
-            // mensaje al usuario
-            toastr.success('Correcto!','Estados cargados');
+    }else{
+
+        $.ajax({
+            url: "http://localhost:8080/servicio/estados",
+            type : 'post',
+            data : paisId,
+            contentType: 'application/json',
+            dataType: "json",
+            headers: {
+                'Accept': 'application/json',
+                "content-type": "application/json;charset=UTF-8"
+            },
+            success: function(response){
+                console.log(response);
+                
+                // limpiamos el select
+                $('#estado').empty();
+                $('#estado').trigger("chosen:updated");
+                $('#ciudad').empty();
+                $('#ciudad').trigger("chosen:updated");
+                $('#estado').html('<option value="u"> Selecciona un estado </option>');
     
-        },
-        error: function(response) {
-            toastr.error('Ocurrio un Error!','Favor de verificar con el administrador');
-        }
-    });
+                // mostramos las opciones
+                $.each( response, function( key, value ) {
+                    newOption = $("<option value="+value.id+">"+value.nombre+"</option>");
+                    $('#estado').append(newOption);
+                });
+                $('#estado').trigger("chosen:updated");
+    
+                // mensaje al usuario
+                toastr.success('Correcto!','Estados cargados');
+    
+        
+            },
+            error: function(response) {
+                toastr.error('Ocurrio un Error!','Favor de verificar con el administrador');
+            }
+        });
+
+    }
+
   
 }
 
 // *** select ciudad ***
 $(function(){
-    $('#select-estado').on('change', onSelectCiudadChange);
+    $('#estado').on('change', onSelectCiudadChange);
 });
   
 function onSelectCiudadChange() {
@@ -85,33 +111,47 @@ function onSelectCiudadChange() {
     // visualizamos el combo
     $('.ciudad').css('display', 'inline-block');
 
-    $.ajax({
-        url: "http://localhost:8080/servicio/ciudades",
-        type : 'post',
-        data : estadoId,
-        contentType: 'application/json',
-        success: function(response){
-            console.log(response);
-            
-            // limpiamos el select
-            $('#select-ciudad').empty();
-            $('#select-ciudad').html('<option> Selecciona una ciudad </option>');
+    if(estadoId == 'u'){
 
-            // mostramos las opciones
-            $.each( response, function( key, value ) {
-                joder = $("<option value="+value.id+">"+value.nombre+"</option>");
-                $('#select-ciudad').append(joder);
-            });
-            $('#select-ciudad').trigger("chosen:updated");
+        $('#ciudad').empty();
+        $('#ciudad').trigger("chosen:updated");
 
-            // mensaje al usuario
-            toastr.success('Correcto!','Ciudades cargadas');
-    
-        },
-        error: function(response) {
-            toastr.error('Ocurrio un Error!','Favor de verificar con el administrador');
-        }
-    });
+    }else{
+
+        $.ajax({
+            url: "http://localhost:8080/servicio/ciudades",
+            type : 'post',
+            data : estadoId,
+            contentType: 'application/json',
+            dataType: "json",
+            headers: {
+                'Accept': 'application/json',
+                "content-type": "application/json;charset=UTF-8"
+            },
+            success: function(response){
+                console.log(response);
+                
+                // limpiamos el select
+                $('#ciudad').empty();
+                $('#ciudad').html('<option> Selecciona una ciudad </option>');
+
+                // mostramos las opciones
+                $.each( response, function( key, value ) {
+                    joder = $("<option value="+value.id+">"+value.nombre+"</option>");
+                    $('#ciudad').append(joder);
+                });
+                $('#ciudad').trigger("chosen:updated");
+
+                // mensaje al usuario
+                toastr.success('Correcto!','Ciudades cargadas');
+        
+            },
+            error: function(response) {
+                toastr.error('Ocurrio un Error!','Favor de verificar con el administrador');
+            }
+        });
+
+    }
   
 }
 
@@ -128,9 +168,9 @@ $("#formSend").validate({
     rules: {
         nombre: { required: true, maxlength: 50, regex:true },
         edad: { required: true, min: 18, max: 99, number: true},
-        pais: { required: true },
-        estado: { required: true },
-        ciudad: { required: true }
+        pais: { required: true, number: true },
+        estado: { required: true, number: true },
+        ciudad: { required: true, number: true }
 
     },
     messages: {
@@ -165,6 +205,9 @@ jQuery.validator.addMethod("regex",
    "Nada de caracteres especiales, por favor"
 );
 
+// oculto la caja de respuesta temporal
+$('#respuesta').css('display', 'none');
+
 // Envio del formulario si todo esta validado
 function enviarForm(){
 
@@ -174,16 +217,73 @@ function enviarForm(){
         var btnEnviar = $("#btnEnviar");
         // obtenemos los datos del formulario
         let datos = $(this).serialize();
+        // mostramos la info por un momento
+        let nombre = $('#nombre').val();
+        let edad = $('#edad').val();
+        let ciudad = $('#ciudad').find('option:selected').text();
+        // mostramos la info por un momento
+        $('#respuesta').css('display', 'inline-block');
+        $(".respuesta").html('<div class="row"><div class="col-md-12">'+
+            '<div class="callout callout-info">'+
+                '<table class="table" style="width:1000px;">'+
+                    '<thead class="thead-dark">'+
+                        '<tr>'+
+                            '<td>'+
+                                'Nombre'+
+                            '</td>'+
+                            '<td>'+
+                                'Edad'+
+                            '</td>'+
+                            '<td>'+
+                                'Ciudad'+
+                            '</td>'+
+                        '</tr>'+
+                    '</thead>'+
+                    '<tbody>'+
+                        '<tr class="table-info">'+
+                            '<td>'+
+                                nombre+
+                            '</td>'+
+                            '<td>'+
+                                edad+
+                            '</td>'+
+                            '<td>'+
+                                ciudad+
+                            '</td>'+
+                        '</tr>'+
+                    '</tbody>'+
+                '</table>'+
+            '</div>');
+        
+        // limpiamos el formulario
+        $('#formSend').trigger('reset');
+        $('#pais').empty();
+        $('#estado').empty();
+        $('#estado').trigger("chosen:updated");
+        $('#ciudad').empty();
+        $('#ciudad').trigger("chosen:updated");
+        toastr.info('Correcto!','Usuario agregado');
 
-        $.ajax({
+        setTimeout(function() {
+            window.location.reload(); 
+        }, 3000);
+
+
+        // esta seria la funcion para la bd
+        // la verdad no me salio un inprevisto y no pude probarla
+        // solo me hacia falta checar la parte de cors.
+        // espero yme den la oprtunidad de laborar y crecer juntos
+
+        /*$.ajax({
             type: $(this).attr("method"),
             url: $(this).attr("action"),
             data: datos,
             contentType: 'application/json',
             dataType: "json",
             headers: {
+                'Access-Control-Allow-Origin': '*',
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                "content-type": "application/json;charset=UTF-8"
             },
             // Esta función se ejecuta durante el envió de la petición.
             beforeSend: function(){
@@ -197,24 +297,27 @@ function enviarForm(){
                 btnEnviar.val("Enviar");
                 btnEnviar.removeAttr("disabled");
             },
-            success: function(data){
+            success: function(response){
 
-                if(data == 1){
-                    $(".respuesta").html(data);
+                console.log(response);
+                // limpiamos el formulario
+                $('#formSend').trigger('reset');
+                /* if(response == 1){
+                    $(".respuesta").html(response);
                 }else{
                     toastr.danger('Error!','No se pudo agregar');
-                }
+                } */
 
 
-            },
+            /*},
             error: function(data){
 
                 toastr.warning('Aviso!','Corrige los errores');
 
             }
-        });
+        });*/
         // Nos permite cancelar el envio del formulario
-        return false;
+        // return false;
         
     });
 

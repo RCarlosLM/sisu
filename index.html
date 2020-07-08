@@ -25,12 +25,12 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
         <a class="navbar-brand text-white">SISU</a>
     </nav>
-
+    
     <!-- contenido -->
     <div class="container mt-5">
-
-        <form id="formSend" action="./php/store.php" method="post">
-
+        
+        <form id="formSend"> <!-- action="./php/store.php" method="POST" -->
+            
             <div class="row">
                 <div class="col-lg-6">
                     <div class="card bg-card">
@@ -51,13 +51,13 @@
                                 Edad
                             </h5>
                             <input  type="number" placeholder="Ingresa tu edad" 
-                                    id="edad"
-                                    name="edad" class="form-control">
+                            id="edad"
+                            name="edad" class="form-control">
                         </div>
                     </div>
                 </div>
             </div>
-
+            
             <div class="row mt-3">
                 <!-- select pais -->
                 <div class="col-lg-4">
@@ -66,13 +66,13 @@
                             <h5 class="card-title text-white">
                                 País
                             </h5>
-                            <select class="chosen-select" id="select-pais" name="pais" data-placeholder="Selecciona tu pais">
-                                <option disabled>Selecciona un pais</option>
+                            <select class="chosen-select" id="pais" name="pais" data-placeholder="Selecciona tu pais">
+                                <option value="u" disabled>Selecciona un pais</option>
                             </select>
                         </div>
                     </div>
                 </div>
-
+                
                 <!-- select estado -->
                 <div class="col-lg-4 estado">
                     <div class="card bg-card">
@@ -80,14 +80,14 @@
                             <h5 class="card-title text-white">
                                 Estado
                             </h5>
-                            <select class="chosen-select" id="select-estado" name="estado" 
+                            <select class="chosen-select" id="estado" name="estado" 
                                     data-placeholder="Selecciona tu estado">
-                                <option disabled>Selecciona un estado</option>
-                            </select>
+                                    <option value="u" disabled>Selecciona un estado</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                    
                 <!-- select ciudades -->
                 <div class="col-lg-4 ciudad">
                     <div class="card bg-card">
@@ -95,39 +95,56 @@
                             <h5 class="card-title text-white">
                                 Ciudad
                             </h5>
-                            <select class="chosen-select" id="select-ciudad" 
-                                    name="ciudad" data-placeholder="Selecciona tu ciudad">
-                                <option disabled>Selecciona un ciudad</option>
-                            </select>
+                            <select class="chosen-select" id="ciudad" 
+                            name="ciudad" data-placeholder="Selecciona tu ciudad">
+                            <option disabled>Selecciona un ciudad</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <input  type="submit" id="btnEnviar" 
+                name="btnEnviar" value="Enviar" class="btn btn-dark btn-block">
+            </div>
+        </div>
+        
+        <div class="row mt-5" id="respuesta">
+            <div class="col-md-12">
+                <div class="col-lg-12 ciudad">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <div class="respuesta text-white">
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-
-            <div class="row mt-5">
-                <div class="col-md-12">
-                    <input  type="submit" id="btnEnviar" 
-                            name="btnEnviar" value="Enviar" class="btn btn-dark btn-block">
-                </div>
-            </div>
+        </div>
         
-        </form>
+    </form>
+    
+</div>
 
-    </div>
-    
-    
+
     <!-- scripts -->
-    
+
     <!-- Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.js"
-    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-    crossorigin="anonymous"></script>
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/localization/messages_es.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" 
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" 
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" 
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" 
+        crossorigin="anonymous"></script>
+
     <!-- select style -->
     <script src="./js/chosen.jquery.js"></script>
     <script src="./js/chosen.jquery.min.js"></script>
